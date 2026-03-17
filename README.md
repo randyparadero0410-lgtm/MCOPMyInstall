@@ -10,7 +10,7 @@ See [IMPLEMENTATION-INSTRUCTIONS.md](./IMPLEMENTATION-INSTRUCTIONS.md) for the e
 - Reusable setup is centralized in `fixtures/base.fixture.ts`.
 - Test data is generated in `test-data/` for deterministic, modular test creation.
 - Environment values are loaded from `.env` through `config/env.ts`.
-- Global authentication state is created in `global-setup.ts` and reused via `storageState`.
+- Tests start with a fresh browser context by default (no shared global `storageState`).
 
 ## Folder Structure
 

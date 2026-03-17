@@ -16,10 +16,8 @@ export default defineConfig({
     ['html', { outputFolder: 'reports/html-report', open: 'never' }],
     ['allure-playwright', { outputFolder: 'allure-results' }]
   ],
-  globalSetup: require.resolve('./global-setup'),
   use: {
     baseURL: env.baseUrl,
-    storageState: 'auth/storageState.json',
     headless: env.headless,
     screenshot: 'only-on-failure',
     trace: 'retain-on-failure',

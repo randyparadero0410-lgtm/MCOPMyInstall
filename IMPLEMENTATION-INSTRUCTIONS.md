@@ -18,12 +18,11 @@ If additional variables are needed, add them in both places:
 
 ## 2. Authentication Flow
 
-Update the authentication approach in [global-setup.ts](./global-setup.ts) when the real application details are known.
+Define the authentication approach directly in tests and fixtures when the real application details are known.
 
-- Keep the empty storage state if tests should start unauthenticated.
-- Replace the current placeholder setup if you want to preload an authenticated browser session.
-- If login should happen through the UI, keep setup simple and perform authentication through [pages/login.page.ts](./pages/login.page.ts).
-- If the application uses cookies or local storage, store the real browser state after login.
+- Keep tests independent by starting unauthenticated and logging in per test or per describe block when needed.
+- If login should happen through the UI, perform authentication through [pages/login.page.ts](./pages/login.page.ts).
+- If the application uses cookies or local storage and you choose performance over full isolation, create a dedicated setup for specific suites only.
 
 Use browser storage state only when it makes the suite faster and more stable.
 
@@ -59,7 +58,7 @@ If the platform has multiple content types, create separate generators for each 
 
 Review and replace scaffold assertions in:
 
-- [tests/ui/login.spec.ts](./tests/ui/login.spec.ts)
+- [tests/ui/sample.spec.ts](./tests/ui/sample.spec.ts)
 - [tests/e2e/publishing-workflow.spec.ts](./tests/e2e/publishing-workflow.spec.ts)
 
 Update:
@@ -100,7 +99,7 @@ If your CI pipeline collects Allure artifacts, keep `allure-results` as a stable
 Apply the real system details in this order:
 
 1. Update `.env` and [config/env.ts](./config/env.ts).
-2. Update [global-setup.ts](./global-setup.ts) for real authentication.
+2. Update authentication steps in fixtures/tests for real authentication.
 3. Update page objects in [pages/login.page.ts](./pages/login.page.ts) and [pages/content.page.ts](./pages/content.page.ts).
 4. Update generators and tests.
 5. Run `npx tsc --noEmit`.

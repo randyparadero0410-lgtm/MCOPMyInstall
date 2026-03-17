@@ -14,5 +14,9 @@ export const env = {
   baseUrl: mustGet('BASE_URL', 'https://example-publishing.local'),
   authUsername: process.env.AUTH_USERNAME ?? '',
   authPassword: process.env.AUTH_PASSWORD ?? '',
-  headless: process.env.HEADLESS !== 'false'
+  headless: process.env.HEADLESS !== 'false',
+  playwrightSiteUrl: mustGet('PLAYWRIGHT_SITE_URL', 'https://playwright.dev/'),
+  playwrightSiteTitle:
+    process.env.PLAYWRIGHT_SITE_TITLE ??
+    'Fast and reliable end-to-end testing for modern web apps | Playwright'
 };
