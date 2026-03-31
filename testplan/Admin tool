@@ -1,0 +1,303 @@
+🧪 Admin Tool – Test Scenarios
+1. Admin Home / Landing Page
+Functional
+	• Verify user with valid role can access Admin Home 
+	• Verify restricted users cannot access Admin Tool 
+	• Validate navigation menu (Questions, Checklists, Templates, Vendors, Publishing, Audit) 
+	• Verify warning prompts for high-impact changes 
+Negative
+	• Unauthorized role → access denied 
+	• Expired session → redirect to login 
+
+2. Select What to Author or Edit
+Functional
+	• Create new artifact (Question / Checklist / Template / Vendor) 
+	• Edit existing artifact 
+	• Review pending changes 
+Edge Cases
+	• Attempt to edit locked/published artifact 
+	• Concurrent edits (2 users editing same item) 
+
+3. Choose Artifact Type
+Functional
+	• Verify selection routes correctly: 
+		○ Question → Question Authoring 
+		○ Checklist → Checklist Authoring 
+		○ Template → Template Authoring 
+		○ Vendor → Vendor Directory 
+Negative
+	• No selection → block progression 
+
+4. Authoring Screens
+4.1 Question Authoring
+	• Create question with: 
+		○ Label 
+		○ Help text 
+		○ Example answer 
+		○ Data type 
+		○ Validation rules 
+	• Validate required fields 
+	• Validate data types (string, number, date, etc.) 
+	• Validation rules execution 
+Edge Cases
+	• Invalid regex validation 
+	• Long text input limits 
+	• Special characters / encoding 
+
+4.2 Checklist Authoring
+	• Add steps and grouping 
+	• Define dependencies between steps 
+	• Assign ownership 
+	• Validate Definition of Done (DoD) 
+Edge Cases
+	• Circular dependencies 
+	• Missing required steps 
+	• Invalid ownership assignment 
+
+4.3 Template Authoring
+	• Add standardized blocks 
+	• Merge fields validation 
+	• Preview rendering 
+Edge Cases
+	• Broken merge fields 
+	• Missing required template variables 
+
+4.4 Vendor Directory
+	• Add vendor details 
+	• Add escalation contacts 
+	• Define coverage/products/status 
+Edge Cases
+	• Duplicate vendor entries 
+	• Invalid contact formats 
+
+5. Applicability & Conditional Logic
+Functional
+	• Apply logic based on: 
+		○ Product 
+		○ Install type 
+		○ Account attributes 
+	• Conditional display of questions 
+	• Gating logic enforcement 
+Edge Cases
+	• Conflicting conditions 
+	• Missing dependency data 
+	• Complex nested conditions 
+
+6. Checklist Dependencies & Automation Mapping
+Functional
+	• Map questions → checklist steps 
+	• Configure triggers 
+	• Validate sequencing 
+Automation
+	• Verify automatic step triggering 
+	• Validate failure handling: 
+		○ Fallback steps 
+		○ Escalation paths 
+Edge Cases
+	• Broken mapping 
+	• Missing dependency before execution 
+
+7. Orchestration Map (Read-Only)
+Functional
+	• Verify visual representation of: 
+		○ Steps 
+		○ Triggers 
+		○ Dependencies 
+	• Validate impact analysis: 
+		○ “What depends on this?” 
+		○ “What breaks if changed?” 
+
+8. Preview & Simulation
+Functional
+	• Preview control panel 
+	• Simulate end-to-end flow 
+	• Validate outbound email preview 
+	• Verify vendor routing 
+Edge Cases
+	• Missing data in simulation 
+	• Incorrect routing logic 
+
+9. Ready to Publish Decision
+Functional
+	• Validate readiness checks: 
+		○ Required fields complete 
+		○ Dependencies valid 
+	• Yes → proceed to Publish Lifecycle 
+	• No → return to Edit 
+
+10. Return to Edit
+	• Verify correct screen redirection 
+	• Ensure unsaved changes are handled 
+	• Validate version consistency 
+
+11. Publish Lifecycle
+Functional
+	• Draft → Review → Approve → Publish 
+	• Versioning support 
+	• Rollback / Restore functionality 
+Edge Cases
+	• Publish without approval 
+	• Rollback to invalid version 
+
+12. Governance, Audit & Learning
+Functional
+	• Track: 
+		○ Who changed what 
+		○ When and why 
+	• Usage analytics 
+	• Adoption signals 
+Edge Cases
+	• Missing audit logs 
+	• Incorrect attribution 
+
+🔄 End-to-End (E2E) Scenarios
+Scenario 1: Full Authoring Flow
+	1. Create Question 
+	2. Add to Checklist 
+	3. Apply conditional logic 
+	4. Map dependencies 
+	5. Preview & simulate 
+	6. Publish 
+	7. Verify in downstream system 
+
+Scenario 2: Notification + Multi-User Flow (Important for your earlier question)
+	1. User A creates checklist 
+	2. Dependency triggers User B action 
+	3. User B logs in 
+	4. Completes assigned step 
+	5. Verify: 
+		○ Notification sent 
+		○ Assignment updated in DB 
+		○ UI reflects completion 
+👉 This is where you integrate:
+	• Playwright (UI) 
+	• API validation (notifications) 
+	• DB validation (assignment state) 
+
+Scenario 3: Failure & Escalation
+	1. Trigger failure in checklist step 
+	2. Validate fallback step execution 
+	3. Verify escalation routing 
+
+⚙️ Automation Strategy Mapping (SDET View)
+UI (Playwright)
+	• Authoring screens 
+	• Preview & simulation 
+	• Publish workflow 
+API Testing
+	• Notification service 
+	• Dependency resolution 
+	• Publish endpoints 
+DB Validation
+	• Checklist assignment 
+	• Dependency mapping 
+	• Audit logs 
+Performance (JMeter)
+	• Bulk authoring (100+ artifacts) 
+	• 2,500+ questions load test 
+	• Publish workflow under load
+
+
+
+
+📘 Test Strategy Document – Admin Tool
+1. Document Overview
+Objective
+
+This document outlines the test strategy for the Admin Tool used for authoring, configuring, and publishing artifacts such as Questions, Checklists, Templates, and Vendor configurations. The goal is to ensure high quality, reliability, and scalability of the system across UI, API, and data layers.
+
+2. Scope
+In Scope
+Admin Home / Navigation
+Artifact Authoring:
+Questions
+Checklists
+Templates
+Vendor Directory
+Conditional Logic & Applicability
+Checklist Dependencies & Automation Mapping
+Orchestration Map
+Preview & Simulation
+Publish Lifecycle
+Governance, Audit, and Logging
+Out of Scope
+External third-party vendor systems (mocked/stubbed)
+Non-admin user interfaces (unless part of E2E validation)
+3. Test Approach
+Testing Levels
+Level	Description
+Unit Testing	Developer-owned validation of logic components
+API Testing	Validation of backend services and business logic
+UI Testing	End-to-end flows using Playwright
+Integration Testing	Validation across services (notifications, DB, APIs)
+System Testing	Full workflow validation
+UAT Support	Business validation support
+4. Test Types
+Functional Testing
+Authoring workflows
+Conditional logic validation
+Dependency mapping
+Publish lifecycle
+End-to-End Testing
+Multi-user workflows
+Notification routing
+Data consistency across UI, API, DB
+Negative Testing
+Invalid inputs
+Broken dependencies
+Unauthorized access
+Regression Testing
+Core flows after each release
+Performance Testing
+Large dataset handling (e.g., 2,500+ questions)
+Concurrent users (authoring + publishing)
+Security Testing
+Role-based access control
+Authentication & session validation
+5. Test Automation Strategy
+UI Automation (Playwright)
+Authoring screens
+Publish workflow
+Preview & simulation
+API Automation
+Notification services
+Dependency validation
+Publish endpoints
+Database Validation
+Assignment states
+Dependency mappings
+Audit logs
+Performance Testing (JMeter)
+Bulk authoring
+High-load publish scenarios
+6. Test Environment
+Environment	Purpose
+Dev	Initial testing
+QA	Functional & integration testing
+Staging	Pre-production validation
+Dependencies
+Test database with seeded data
+Mock services for external integrations
+Email/notification sandbox
+7. Entry & Exit Criteria
+Entry Criteria
+Requirements finalized
+Test environment ready
+Test data available
+Exit Criteria
+All critical test cases passed
+No open high/critical defects
+Regression suite passed
+Stakeholder sign-off
+8. Risk & Mitigation
+Risk	Mitigation
+Complex dependency logic	API + DB validation
+Multi-user workflows	E2E automation scenarios
+Data inconsistency	Cross-layer validation
+High data volume	Performance testing
+9. Deliverables
+Test Strategy Document
+Test Case Matrix
+Automated Test Scripts
+Test Execution Reports
+Defect Reports
