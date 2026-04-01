@@ -301,3 +301,176 @@ Test Case Matrix
 Automated Test Scripts
 Test Execution Reports
 Defect Reports
+
+
+
+
+
+
+
+
+
+
+🧪 Admin Tool – Test Scenarios (Production-Ready, SDET Version)
+1. Authentication & Access Control
+Verify user with valid role can successfully authenticate and access Admin Home
+Verify user without required role is denied access to Admin Tool
+Verify expired session forces re-authentication
+Verify role-based access restricts modules (Questions, Checklists, Templates, Vendors, Publishing, Audit)
+2. Admin Journey (Core Workflow Guardrails)
+Verify user can complete end-to-end flow: authenticate → author → preview → publish
+Verify system blocks publish when required schema, logic, or dependencies are incomplete
+Verify preview detects breaking changes to active installs before publish
+Verify system enforces lifecycle transitions (Draft → Review → Approve → Publish)
+Verify version is incremented on each publish
+Verify rollback restores previous stable configuration
+3. Artifact Management
+Verify user can create new artifact (Question, Checklist, Template, Vendor)
+Verify user can edit draft artifact
+Verify user cannot edit published artifact without versioning
+Verify system prevents concurrent overwrite (last-write conflict or locking)
+Verify pending changes are tracked and retrievable
+4. Schema Configuration (Critical Layer)
+Verify system persists field schema with correct metadata (type, label, storage)
+Verify schema changes are version-controlled
+Verify schema updates do not corrupt existing data
+Verify schema changes trigger impact analysis
+5. Field Data Types & Storage
+Verify system supports:
+text, number, boolean, date/time
+relational references (IDs, foreign keys)
+audit fields (created_at, updated_at, created_by)
+file-backed inputs
+Verify system stores raw values separately from formatted values
+Verify currency formatting does not affect stored raw numeric value
+Verify invalid data types are rejected at API and UI level
+6. Validation Rules Engine
+Verify required field validation blocks submission
+Verify format validation (regex, length, constraints) is enforced
+Verify validation rules execute consistently across UI and API
+Verify invalid validation rules (e.g., broken regex) are rejected at config time
+7. Applicability & Conditional Logic Engine
+Verify conditional logic evaluates correctly based on:
+product
+install type
+dealer context
+region
+Verify nested conditions are evaluated correctly
+Verify conflicting rules are detected and blocked
+Verify missing upstream attributes do not cause system failure
+Verify logic is configurable (not hardcoded in code)
+8. Dealer Context & Upstream Integration
+Verify system consumes upstream attributes (e.g., dealer location, region)
+Verify logic adapts dynamically based on upstream data
+Verify missing or delayed upstream data is handled gracefully
+Verify integration with external context providers (e.g., CRM)
+9. Checklist Authoring & Dependencies
+Verify checklist steps can be created, grouped, and ordered
+Verify dependencies between steps are enforced during execution
+Verify circular dependencies are detected and blocked
+Verify ownership assignment is required and validated
+10. Automation Mapping & Execution
+Verify questions are correctly mapped to checklist steps
+Verify triggers initiate correct downstream steps
+Verify execution order follows dependency graph
+Verify failure in a step triggers fallback logic
+Verify escalation path is executed when defined
+Verify system prevents execution when dependencies are unmet
+11. File Import & Mapping Engine
+Verify system accepts file uploads (CSV/Excel)
+Verify column-to-field mapping is configurable
+Verify mapping definitions are reusable
+Verify transformation rules (mapping actions) are applied correctly
+Verify mismatched schemas are handled via mapping layer
+Verify invalid mappings are rejected before execution
+Verify partial failures are reported with clear error details
+12. Orchestration Map & Impact Analysis
+Verify orchestration map reflects actual dependency graph
+Verify map is read-only and consistent with backend state
+Verify impact analysis identifies all downstream dependencies
+Verify system flags breaking changes before publish
+Verify impact analysis includes active installs
+13. Preview & Simulation Engine
+Verify preview renders configuration as actual runtime behavior
+Verify simulation executes full workflow without persistence side effects
+Verify simulation includes:
+conditional logic
+dependency execution
+notification routing
+Verify simulation fails when configuration is incomplete
+Verify preview detects incorrect routing before publish
+14. Notification & Multi-User Workflow
+Verify notification is triggered on assignment
+Verify assigned user receives correct task
+Verify user can complete assigned step
+Verify completion updates system state (UI + DB)
+Verify duplicate notifications are not sent
+Verify notification failure triggers retry or logging
+15. Publish Lifecycle
+Verify system enforces approval before publish
+Verify publish creates immutable version snapshot
+Verify rollback restores previous working version
+Verify restore does not corrupt dependencies
+Verify publish updates downstream consumers
+16. Governance, Audit & Observability
+Verify all configuration changes are logged with:
+user
+timestamp
+change details
+Verify audit logs are immutable
+Verify version history is accessible
+Verify system tracks usage and adoption metrics
+Verify missing logs are detected as system failure
+17. Data & Integration (High Volume / Real Ops)
+Verify system supports large data ingestion (migration scenarios)
+Verify ingestion does not block system availability
+Verify hybrid flows (automation + manual review) work correctly
+Verify partial ingestion failures are recoverable
+Verify system integrates with data platforms (e.g., warehouse systems)
+18. Performance & Scalability
+Verify system handles:
+2,500+ questions
+100+ artifacts
+concurrent admin users
+Verify publish operation completes within acceptable SLA
+Verify import processing scales with large files
+Verify orchestration execution latency is within limits
+🔄 E2E Critical Scenarios (Must Automate)
+E2E-01: Author → Validate → Publish
+Verify schema, logic, and dependencies are defined
+Verify impact analysis passes
+Verify preview is accurate
+Verify publish succeeds
+Verify downstream system reflects configuration
+E2E-02: File Import → Mapping → Execution
+Verify file upload → mapping → transformation → storage
+Verify invalid rows are rejected
+Verify valid rows are persisted correctly
+E2E-03: Multi-User Assignment Flow
+Verify User A triggers workflow
+Verify User B receives assignment
+Verify User B completes task
+Verify DB and UI reflect completion
+E2E-04: Failure Handling
+Verify step failure triggers fallback
+Verify escalation is executed
+Verify system logs failure correctly
+⚙️ Execution Strategy (Real SDET Setup)
+UI (Playwright)
+Authoring flows
+Preview & simulation
+Publish lifecycle
+API Layer
+Schema validation
+Mapping engine
+Notification service
+Publish endpoints
+DB Validation
+Schema storage
+Mapping configs
+Audit logs
+Assignment states
+Performance (JMeter)
+Bulk authoring
+File ingestion
+Publish under load
